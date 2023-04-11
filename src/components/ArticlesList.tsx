@@ -1,11 +1,17 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 interface ArticleProps {
   articles: {
-    name: string;
+    _id: string;
     title: string;
-    content: string[];
+    author: string;
+    content: string;
+    vote: number;
+    comments: {
+      _id: string;
+      user: string;
+      content: string;
+    }[];
   }[];
 }
 
@@ -13,11 +19,11 @@ const ArticlesList = ({ articles }: ArticleProps) => {
   return (
     <div>
       {articles.map((article) => (
-        <div className="article-list-item" key={article.name}>
+        <div className="article-list-item" key={article.title}>
           <h3>{article.title}</h3>
           <p>
-            {article.content[0].substring(0, 350)}...
-            <Link to={`/articles/${article.name}`}>Read more</Link>
+            {article.content}
+            <Link to={`/articles/${article._id}`}>Read more</Link>
           </p>
         </div>
       ))}

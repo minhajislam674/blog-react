@@ -1,6 +1,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
+  padding: 0 16px;
 }
 
 .article-list-item {
@@ -11,5 +12,15 @@
 
 .article-list-item p {
   padding-bottom: 32px;
-  border-bottom: 2px solid black;
+  border-bottom: 1px solid black;
+}
+
+.comment-list-item {
+  text-decoration: none;
+  color: black;
+}
+
+.comment-list-item p {
+  padding-bottom: 16px;
+  border-bottom: 1px solid black;
 }
