@@ -9,6 +9,7 @@ interface CommentProps {
 const CommentsList = ({ comments }: CommentProps) => {
   return (
     <div>
+      <h2>Comments</h2>
       {comments.map((comment) => (
         <div className="comment-list-item" key={comment._id}>
           <h3>{comment.user}</h3>
