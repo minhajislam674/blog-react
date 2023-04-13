@@ -1,4 +1,3 @@
-import AddCommentForm from "./AddCommentForm";
 interface CommentProps {
   comments: {
     _id: string;

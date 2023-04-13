@@ -1,28 +1,15 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState, useContext } from "react";
+import { Context } from "../contexts/ArticleContext";
 
 interface articleProps {
-  articleName: string;
+  articleId: string;
 }
 
-const AddCommentForm = ({ articleName }: articleProps) => {
+const AddCommentForm = ({ articleId }: articleProps) => {
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
 
-  console.log(comment);
-  console.log(name);
-
-  const addComment = async () => {
-    const response = await axios.post(
-      `http://localhost:3000/articles/${articleName}/comments`,
-      {
-        user: name,
-        content: comment,
-      }
-    );
-    const updatedArticle = response.data;
-    console.log(updatedArticle);
-  };
+  const { addComment } = useContext(Context);
 
   return (
     <div>
@@ -30,7 +17,7 @@ const AddCommentForm = ({ articleName }: articleProps) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          addComment();
+          addComment(articleId, name, comment);
           setName("");
           setComment("");
         }}

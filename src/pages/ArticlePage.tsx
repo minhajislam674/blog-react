@@ -1,38 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { Context } from "../contexts/ArticleContext";
 import NotFoundPage from "./NotFoundPage";
 import CommentsList from "../components/CommentsList";
 import AddCommentForm from "../components/AddCommentForm";
 
-interface ArticleProps {
-  articles: {
-    _id: string;
-    title: string;
-    author: string;
-    content: string;
-    vote: number;
-    comments: {
-      _id: string;
-      user: string;
-      content: string;
-    }[];
-  }[];
-
-  upvoteArticle: (articleId: string) => void;
-  removeVoteArticle: (articleId: string) => void;
-}
-
-const ArticlePage = ({
-  articles,
-  upvoteArticle,
-  removeVoteArticle,
-}: ArticleProps) => {
+const ArticlePage = () => {
   const { articleId } = useParams();
-  const [upvoted, setUpvoted] = useState(false);
+  const { articleData, upvoteArticle, removeVoteArticle, upvoted } =
+    useContext(Context);
 
   try {
     const article = articleId
-      ? articles.find((article) => article._id === articleId)
+      ? articleData.find((article) => article._id === articleId)
       : undefined;
 
     if (!article) {
@@ -45,10 +25,8 @@ const ArticlePage = ({
           onClick={() => {
             if (upvoted) {
               removeVoteArticle(article._id);
-              setUpvoted(false);
             } else {
               upvoteArticle(article._id);
-              setUpvoted(true);
             }
           }}
         >
@@ -62,7 +40,7 @@ const ArticlePage = ({
         <p>{article.content}</p>
         <h2>Comments</h2>
         <CommentsList comments={article.comments} />
-        <AddCommentForm articleName={article._id} />
+        <AddCommentForm articleId={article._id} />
       </div>
     );
   } catch (error) {
