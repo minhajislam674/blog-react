@@ -13,7 +13,6 @@ import {
   CardContent,
   Box,
 } from "@mui/material";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
 const ArticlePage = () => {
   const { articleId } = useParams();

@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import { Box } from "@mui/material";
 
 export default function NavBar() {
   const { user } = useUser();
@@ -38,7 +39,6 @@ export default function NavBar() {
           borderColor: "ActiveBorder",
           justifyContent: "space-between",
           alignItems: "center",
-          gap: "10px",
         }}
       >
         <Typography component="h2" variant="h5" color="inherit">
@@ -64,9 +64,7 @@ export default function NavBar() {
               <MenuItem component={Link} to="/">
                 Home
               </MenuItem>
-              <MenuItem component={Link} to="/about">
-                About
-              </MenuItem>
+
               <MenuItem component={Link} to="/articles">
                 Articles
               </MenuItem>
@@ -88,13 +86,16 @@ export default function NavBar() {
             </Menu>
           </>
         ) : (
-          <>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "40px",
+            }}
+          >
             <Button component={Link} to="/" variant="text" size="small">
               Home
             </Button>
-            <Button component={Link} to="/about" variant="text" size="small">
-              About
-            </Button>
+
             <Button component={Link} to="/articles" variant="text" size="small">
               Articles
             </Button>
@@ -120,7 +121,7 @@ export default function NavBar() {
                 Login
               </Button>
             )}
-          </>
+          </Box>
         )}
       </Toolbar>
     </>
