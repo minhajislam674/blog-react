@@ -1,11 +1,11 @@
 import * as React from "react";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { Link, useNavigate } from "react-router-dom";
 import useUser from "../hooks/useUser";
 import { getAuth, signOut } from "firebase/auth";
 import { useTheme } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -42,7 +42,7 @@ export default function NavBar() {
         }}
       >
         <Typography component="h2" variant="h5" color="inherit">
-          my-blog
+          SuperBlog
         </Typography>
 
         {isSmallerScreen ? (
