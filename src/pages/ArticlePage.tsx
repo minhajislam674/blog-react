@@ -1,10 +1,19 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../contexts/ArticleContext";
 import NotFoundPage from "./NotFoundPage";
 import CommentsList from "../components/CommentsList";
 import AddCommentForm from "../components/AddCommentForm";
 import useUser from "../hooks/useUser";
+import {
+  Button,
+  Typography,
+  Card,
+  CardHeader,
+  CardContent,
+  Box,
+} from "@mui/material";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
 const ArticlePage = () => {
   const { articleId } = useParams();
@@ -23,37 +32,68 @@ const ArticlePage = () => {
     }
 
     return (
-      <div>
-        <h1>{article.title}</h1>
-        <p>Written by: {article.author}</p>
-        <p>This post has currently {article.vote} upvotes!</p>
-        {user ? (
-          <button
-            onClick={() => {
-              if (upvoted) {
-                removeVoteArticle(article._id);
-              } else {
-                upvoteArticle(article._id);
-              }
-            }}
-          >
-            {upvoted ? "Remove Vote" : "Upvote"}
-          </button>
-        ) : (
-          <Link to="/login">
-            <button>Login to upvote</button>
-          </Link>
-        )}
-        <p>{article.content}</p>
-        {user ? (
-          <AddCommentForm articleId={article._id} />
-        ) : (
-          <Link to="/login">
-            <button>Login to comment</button>
-          </Link>
-        )}
-        <CommentsList comments={article.comments} />
-      </div>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          "& > :not(style)": { m: 1, width: "100%" },
+        }}
+      >
+        <Card>
+          <CardHeader
+            title={article.title}
+            subheader={`Written by: ${article.author}`}
+          />
+          <CardContent>
+            <Typography
+              variant="body1"
+              style={{ marginTop: "1rem", marginBottom: "1rem" }}
+            >
+              {article.content}
+            </Typography>
+
+            {user ? (
+              <Button
+                variant="contained"
+                color={upvoted ? "secondary" : "primary"}
+                onClick={() => {
+                  if (upvoted) {
+                    removeVoteArticle(article._id);
+                  } else {
+                    upvoteArticle(article._id);
+                  }
+                }}
+              >
+                {upvoted ? "Remove Vote" : "Upvote"}
+              </Button>
+            ) : (
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                <Button variant="text" color="secondary">
+                  Login to upvote this article
+                </Button>
+              </Link>
+            )}
+            <Typography>
+              This article has currently {article.vote} upvotes!
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            {user ? (
+              <AddCommentForm articleId={article._id} />
+            ) : (
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                <Button variant="text" color="secondary">
+                  Login to comment on this article
+                </Button>
+              </Link>
+            )}
+            <CommentsList comments={article.comments} />
+          </CardContent>
+        </Card>
+      </Box>
     );
   } catch (error) {
     console.error(error);

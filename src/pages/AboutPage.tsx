@@ -1,9 +1,9 @@
-import React from "react";
+import { Typography } from "@mui/material";
 
 const AboutPage = () => {
   return (
     <div>
-      <h1>About Page</h1>
+      <Typography variant="h3">About</Typography>
     </div>
   );
 };

@@ -1,60 +1,128 @@
 import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useUser from "../hooks/useUser";
+import { getAuth, signOut } from "firebase/auth";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 
-interface NavBarProps {
-  sections: ReadonlyArray<{
-    title: string;
-    url: string;
-  }>;
-  title: string;
-}
+export default function NavBar() {
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmallerScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-export default function NavBar(props: NavBarProps) {
-  const { sections, title } = props;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenuOpen = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <React.Fragment>
-      <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Button size="small">Subscribe</Button>
-        <Typography
-          component="h2"
-          variant="h5"
-          color="inherit"
-          align="center"
-          noWrap
-          sx={{ flex: 1 }}
-        >
-          {title}
-        </Typography>
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
-        <Button variant="outlined" size="small">
-          Sign up
-        </Button>
-      </Toolbar>
+    <>
       <Toolbar
         component="nav"
-        variant="dense"
-        sx={{ justifyContent: "space-between", overflowX: "auto" }}
+        variant="regular"
+        sx={{
+          borderBottom: 1,
+          borderColor: "ActiveBorder",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "10px",
+        }}
       >
-        {sections.map((section) => (
-          <Link
-            key={section.title}
-            to={section.url}
-            style={{ textDecoration: "none" }}
-          >
-            <Button color="inherit" size="small">
-              {section.title}
+        <Typography component="h2" variant="h5" color="inherit">
+          my-blog
+        </Typography>
+
+        {isSmallerScreen ? (
+          <>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={handleMenuOpen}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem component={Link} to="/">
+                Home
+              </MenuItem>
+              <MenuItem component={Link} to="/about">
+                About
+              </MenuItem>
+              <MenuItem component={Link} to="/articles">
+                Articles
+              </MenuItem>
+              {user ? (
+                <MenuItem
+                  onClick={() => {
+                    signOut(getAuth()).then(() => {
+                      navigate("/login");
+                    });
+                  }}
+                >
+                  Sign Out
+                </MenuItem>
+              ) : (
+                <MenuItem component={Link} to="/login">
+                  Login
+                </MenuItem>
+              )}
+            </Menu>
+          </>
+        ) : (
+          <>
+            <Button component={Link} to="/" variant="text" size="small">
+              Home
             </Button>
-          </Link>
-        ))}
+            <Button component={Link} to="/about" variant="text" size="small">
+              About
+            </Button>
+            <Button component={Link} to="/articles" variant="text" size="small">
+              Articles
+            </Button>
+            {user ? (
+              <Button
+                onClick={() => {
+                  signOut(getAuth()).then(() => {
+                    navigate("/login");
+                  });
+                }}
+                variant="contained"
+                size="small"
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <Button
+                component={Link}
+                to="/login"
+                variant="contained"
+                size="small"
+              >
+                Login
+              </Button>
+            )}
+          </>
+        )}
       </Toolbar>
-    </React.Fragment>
+    </>
   );
 }

@@ -1,9 +1,10 @@
 import ArticlesList from "../components/ArticlesList";
+import { Typography } from "@mui/material";
 
 const ArticlesListPage = () => {
   return (
     <div>
-      <h1>Article List</h1>
+      <Typography variant="h3">Articles</Typography>
       <ArticlesList />
     </div>
   );
