@@ -1,23 +1,26 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Typography, TextField, Button, Box } from "@mui/material";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassowrd, setConfirmPassoword] = useState("");
-  const [error, setError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
 
-  const register = async () => {
+  const register = async (e: any) => {
+    e.preventDefault();
+
     const auth = getAuth();
     try {
-      if (password !== confirmPassowrd) {
+      if (password !== confirmPassword) {
         setError("Passwords do not match");
         return;
       }
-      createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       navigate("/articles");
     } catch (error: any) {
       setError(error.message);
@@ -26,35 +29,52 @@ const SignUpPage = () => {
 
   return (
     <>
-      <h1>Register</h1>
-      {error && <p className="error"> {error} </p>}
-      <label htmlFor="email">Email:</label>
-      <input
-        type="email"
-        id="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <label htmlFor="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <label htmlFor="confirm-password">Confirm Password:</label>
-      <input
-        type="password"
-        id="confirm-password"
-        value={confirmPassowrd}
-        onChange={(e) => setConfirmPassoword(e.target.value)}
-      />
-      <button onClick={register}>Register</button>
-
-      <p>
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
+      <Box
+        component="form"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          "& > :not(style)": { m: 1, width: "50%" },
+        }}
+        noValidate
+        autoComplete="off"
+        onSubmit={register}
+      >
+        <Typography variant="h3">Register</Typography>
+        {error && <Typography color="error">{error}</Typography>}
+        <TextField
+          id="outlined-basic"
+          label="Email"
+          variant="outlined"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
+        <TextField
+          id="outlined-password-input"
+          label="Password"
+          type="password"
+          autoComplete="new-password"
+          variant="outlined"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+        <TextField
+          id="outlined-confirm-password-input"
+          label="Confirm Password"
+          type="password"
+          autoComplete="new-password"
+          variant="outlined"
+          value={confirmPassword}
+          onChange={(event) => setConfirmPassword(event.target.value)}
+        />
+        <Button variant="contained" type="submit">
+          Register
+        </Button>
+        <Typography>
+          Already have an account? <Link to="/login">Login</Link>
+        </Typography>
+      </Box>
     </>
   );
 };

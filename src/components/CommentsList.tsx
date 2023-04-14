@@ -1,3 +1,5 @@
+import { Box, Typography } from "@mui/material";
+
 interface CommentProps {
   comments: {
     _id: string;
@@ -8,15 +10,25 @@ interface CommentProps {
 
 const CommentsList = ({ comments }: CommentProps) => {
   return (
-    <div>
-      <h2>Comments</h2>
-      {comments.map((comment) => (
-        <div className="comment-list-item" key={comment._id}>
-          <h3>{comment.user}</h3>
-          <p>{comment.content}</p>
-        </div>
-      ))}
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "left",
+        "& > :not(style)": { m: 1, width: "50%" },
+      }}
+    >
+      <Typography variant="h5">{comments.length} Comment(s)</Typography>
+      {comments
+        .slice()
+        .reverse()
+        .map((comment) => (
+          <Box key={comment._id} boxShadow={1} p={2} my={2}>
+            <Typography variant="caption">{comment.user}</Typography>
+            <Typography variant="subtitle1">{comment.content}</Typography>
+          </Box>
+        ))}
+    </Box>
   );
 };
 
