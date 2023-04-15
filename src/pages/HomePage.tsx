@@ -8,7 +8,7 @@ const HomePage = () => {
         variant="h3"
         style={{ color: "#000", marginBottom: "2rem", marginTop: "2rem" }}
       >
-        Welcome to my blog
+        Welcome to the SuperBlog 🦸
       </Typography>
       <Typography variant="body1">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
