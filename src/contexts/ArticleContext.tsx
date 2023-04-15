@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Article } from "../interfaces/Article";
 import axios from "axios";
 
+const API_URL = "https://super-blog.cyclic.app";
+
 interface ContextProps {
   articleData: Article[];
   upvoteArticle: (articleId: string) => Promise<void>;
@@ -26,13 +28,23 @@ function ContextProvider({ children }: { children: React.ReactNode }) {
   const [articleData, setArticleData] = useState<Article[]>([]);
   const [upvoted, setUpvoted] = useState(false);
 
+  const fetchArticleData = async () => {
+    const response = await axios.get(`${API_URL}/articles`);
+    setArticleData(response.data);
+  };
+
+  useEffect(() => {
+    fetchArticleData();
+  }, []);
+
+  //add comment
   const addComment = async (
     articleId: string,
     UserName: string,
     UserComment: string
   ) => {
     const response = await axios.post(
-      `http://localhost:3000/articles/${articleId}/comments`,
+      `${API_URL}/articles/${articleId}/comments`,
       {
         user: UserName,
         content: UserComment,
@@ -50,20 +62,10 @@ function ContextProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-  const fetchArticleData = async () => {
-    const response = await axios.get(`http://localhost:3000/articles`);
-    setArticleData(response.data);
-  };
-
-  useEffect(() => {
-    fetchArticleData();
-  }, []);
-
   //upvote article
-
   const upvoteArticle = async (articleId: string) => {
     const response = await axios.put(
-      `http://localhost:3000/articles/${articleId}/addvote`
+      `${API_URL}/articles/${articleId}/addvote`
     );
     const updatedArticle = response.data;
     setArticleData((prevArticleData) => {
@@ -79,10 +81,9 @@ function ContextProvider({ children }: { children: React.ReactNode }) {
   };
 
   //remove vote
-
   const removeVoteArticle = async (articleId: string) => {
     const response = await axios.put(
-      `http://localhost:3000/articles/${articleId}/removevote`
+      `${API_URL}/articles/${articleId}/removevote`
     );
     const updatedArticle = response.data;
     setArticleData((prevArticleData) => {

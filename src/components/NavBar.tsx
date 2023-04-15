@@ -6,12 +6,14 @@ import { useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { Box } from "@mui/material";
+import logo from "../assets/super-blog.svg";
 
 export default function NavBar() {
   const { user } = useUser();
@@ -41,9 +43,12 @@ export default function NavBar() {
           alignItems: "center",
         }}
       >
-        <Typography component="h2" variant="h5" color="inherit">
-          SuperBlog
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          <Avatar alt="SuperBlog Logo" src={logo} />
+          <Typography component="h2" variant="h5" color="inherit">
+            SuperBlog
+          </Typography>
+        </Box>
 
         {isSmallerScreen ? (
           <>
